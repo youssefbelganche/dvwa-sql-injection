@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+
+<body>
+
+  <div class="topnav">
+    <a class="active">SQL INJECTION</a>
+    <a style="color: white;" class="deactivate">293 ANIMAL NAME</a>
+  </div>
+
+
+  <br>
+  <div class="container">
+    <div class="row">
+
+      <div class="col">
+        
+        <div class="container" id="submit_query">
+          <h3 style="color:green!important;">CAPTURE THE FLAG</h3>
+          
+            <div class="form-group">
+              <label for="exampleInputEmail1">Animals name database</label>
+              <input type="text" class="form-control" id="query_input" aria-describedby="animal name" placeholder="Search for an animal by name">
+            </div>
+            <button id="send_query" type="submit" class="btn btn-primary">Check</button>
+            <br><hr>
+            
+        </div>
+        
+      </div>
+
+
+
+
+      <div class="col">  
+        <div class="container" id="submit_flag">
+        <h3 style="color:green!important;">SUBMIT FLAG</h3>
+        <p style="color:red !important; font-size: 75%;">(Not vulnerable to sql injection)</p>
+        
+          
+            <div class="form-group">
+              <label for="exampleInputEmail1">Name</label>
+              <input type="text" class="form-control" id="Name" aria-describedby="emailHelp" placeholder="Enter name">
+              <small id="emailHelp" class="form-text text-muted">you will become famous?.</small>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail">FLAG</label>
+              <input type="text" class="form-control" id="Flag" placeholder="FLAG starts with 'CSA-2020-'">
+            </div>
+            <button id="check_flag" type="submit" class="btn btn-primary">Check</button>
+            
+        </div>
+      </div>
+
+
+
+      <div class="col">
+        <div class="container"></div>
+          <h3 style="color:green!important;">HACKER BY</h3>
+          <h6>it's Creator</h6>
+        </div> 
+      </div>
+    </div>
+
+  </div>
+<br>
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <label for="exampleInputEmail1" style=color:darkgreen;>Output Format "id,name"</label>
+        <div class="card">
+          
+          <div class="card-body" id="output_card">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+    var test = 20;
+
+    $("#send_query").click(function () {
+      var Query = $('#submit_query').find('input[id="query_input"]').val();
+      $.ajax({
+        type: "POST",
+        url: "query",
+        data: {
+          query: Query
+        },
+        success: function (data) {
+          $('#submit_query').find('input[id="query_input"]').val('');
+          console.log(data.data);
+          write_output(data.data, "black");
+        },
+        error: function (result) {
+          $('#submit_query').find('input[id="query_input"]').val('');
+          //redner response 
+          console.log(result.responseJSON.error);
+          write_output(result.responseJSON.error, "red");
+        }
+      });
+    }
+
+    );
+
+
+    $("#check_flag").click(function () {
+      
+      var Flag = $('#submit_flag').find('input[id="Flag"]').val();
+      var Name = $('#submit_flag').find('input[id="Name"]').val();
+      $.ajax({
+        type: "POST",
+        url: "check_flag",
+        data: {
+          flag: Flag,
+          name: Name
+        },
+        success: function (data) {
+          $('#submit_flag').find('input[id="Flag"]').val('');
+          $('#submit_flag').find('input[id="Name"]').val('');
+          alert("Congratulations, that is a Flag :) ");
+        },
+        error: function (result) {
+          alert("Im sorry that's not a FLAG :( ");
+        }
+      });
+    }
+    );
+
+  function write_output(data, color){
+    $("#output_card").text('');
+    if(data.length == 0)
+    {
+      $("#output_card").text("Not found, Search for something else ");  
+      $("#output_card").css('color', 'black');
+      return 0;
+    }
+
+    
+    $("#output_card").text(data);
+    if (color == 'red')
+    {
+      $("#output_card").css('color', 'red');
+    }
+    else
+    {
+      $("#output_card").css('color', 'darkgreen');
+    }
+  }
+
+  </script>
+
+</body>
+
+<!-- Footer -->
+<footer class="page-footer font-small blue">
+
+
+  <div style="color:white;" class="footer-copyright text-center py-3">© FONTYS - 2020 - ICT - CS-A:
+    <a style="color:white;" href="https://www.linkedin.com/in/youssef-belganche-b79807170/">  By y.Belganche </a>
+  </div>
+
+
+</footer>
+<!-- Footer -->
+
+</html>
+<style>
+  .topnav {
+    overflow: hidden;
+    background-color: #333;
+  }
+
+  .topnav a {
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+  }
+
+  .topnav a:hover {
+    background-color: #ddd;
+    color: black;
+  }
+
+  .topnav a.active {
+    background-color: #4CAF50;
+    color: white;
+  }
+
+  footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 100px;
+    background-color: #4CAF50;
+  }
+
+  html {
+    position: relative;
+    min-height: 100%;
+    padding-bottom: 100px;
+  }
+
+  body {
+    margin-bottom: 100px;
+  }
+</style>
