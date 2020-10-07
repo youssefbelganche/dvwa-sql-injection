@@ -80,8 +80,8 @@ WSGI_APPLICATION = 'injection.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'test',
-        'USER': 'root',
+        'NAME': 'test_sql',
+        'USER': 'db_user',
         'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': '3306',
